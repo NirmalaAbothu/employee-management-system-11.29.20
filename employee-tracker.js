@@ -398,7 +398,250 @@ function removeEmployee() {
      );
 }
 
-function updateEmployeeByManager() {}
+function updateEmployeeByManager1() {
+     var choiceArray = [];
+     var managerArray = [];
+     connection.query(
+          "SELECT id, CONCAT(e.first_name,' ' ,e.last_name) as employeeName from employee e ",
+          function (err, res) {
+               if (err) throw err;
+               inquirer
+                    .prompt([
+                         {
+                              type: "list",
+                              name: "employeeName",
+
+                              choices: function () {
+                                   // var choiceArray = [];
+                                   for (var i = 0; i < res.length; i++) {
+                                        choiceArray.push(res[i].employeeName);
+                                   }
+                                   return choiceArray;
+                              },
+                              message:
+                                   "Which employee manager do you want update?",
+                         },
+                    ])
+                    .then(function (answer) {
+                         // get the information of the chosen list
+                         var empName;
+                         var employeeId;
+                         // managerArray = choiceArray;
+                         console.log(answer.employeeName);
+                         for (var i = 0; i < choiceArray.length; i++) {
+                              if (
+                                   choiceArray[i].employeeName !==
+                                   answer.employeeName
+                              ) {
+                                   managerArray.push(choiceArray[i]);
+                                   console.log(managerArray[i]);
+                                   console.log(choiceArray[i]);
+                              }
+                         }
+                         console.log(choiceArray);
+                         console.log(managerArray);
+                         // for (var i = 0; i < res.length; i++) {
+                         //      if (res[i].employeeName === answer.employeeName) {
+                         //           empName = res[i].employeeName;
+                         //           console.log(empName);
+                         //           employeeId = res[i].id;
+                         //           console.log(employeeId);
+                         //      }
+                         // }
+                         //prevents employee from being their own manager
+                         // managerArray = choiceArray;
+                         // managerArray = choiceArray.filter(
+                         //      (currentEmp) => currentEmp.employeeName != empName
+                         // );
+                         // console.log(choiceArray);
+                         // console.log(managerArray);
+                         inquirer
+                              .prompt([
+                                   {
+                                        type: "list",
+                                        name: "managerName",
+
+                                        choices: managerArray,
+
+                                        message:
+                                             "Which  manager do you want assign?",
+                                   },
+                              ])
+                              .then(function (result) {
+                                   var empId = employeeId;
+                                   var managerId;
+                                   for (
+                                        var i = 0;
+                                        i < managerArray.length;
+                                        i++
+                                   ) {
+                                        console.log(
+                                             managerArray[i].employeeName
+                                        );
+                                        if (
+                                             managerArray[i].employeeName ===
+                                             result.managerName
+                                        ) {
+                                             managerId = managerArray[i].id;
+
+                                             console.log(managerId);
+                                        }
+                                   }
+                                   connection.query(
+                                        "UPDATE employee SET ? WHERE ?",
+                                        [
+                                             {
+                                                  manager_id: managerId,
+                                             },
+                                             {
+                                                  id: empId,
+                                             },
+                                        ],
+                                        function (err) {
+                                             if (err) throw err;
+                                             console.log(
+                                                  "employee's manager updated successfully"
+                                             );
+                                        }
+                                   );
+                              });
+                    });
+          }
+     );
+
+     // var empNameArray = empName.split(" ");
+     // connection.query(
+     //      "DELETE FROM employee WHERE ?",
+     //      [
+     //           {
+     //                first_name: empNameArray[0],
+     //           },
+     //           {
+     //                last_name: empNameArray[1],
+     //           },
+     //      ],
+     //      function (err) {
+     //           if (err) throw err;
+     //           console.log(
+     //                "Employe record deleted successfully"
+     //           );
+     //      }
+     // );
+}
+
+//new
+
+function updateEmployeeByManager() {
+     var choiceArray = [];
+     var managerArray = [];
+     connection.query(
+          "SELECT id, CONCAT(e.first_name,' ' ,e.last_name) as employeeName from employee e ",
+          function (err, res) {
+               if (err) throw err;
+               console.log("This is res");
+               console.log(res);
+               inquirer
+                    .prompt([
+                         {
+                              type: "list",
+                              name: "employeeName",
+
+                              choices: function () {
+                                   // var choiceArray = [];
+                                   for (var i = 0; i < res.length; i++) {
+                                        choiceArray.push(res[i].employeeName);
+                                   }
+                                   console.log("This is choice array");
+                                   console.log(choiceArray);
+                                   return choiceArray;
+                              },
+                              message: "Which employee do you want update?",
+                         },
+                    ])
+                    .then(function (answer) {
+                         // get the information of the chosen list
+                         var empId;
+                         for (var i = 0; i < res.length; i++) {
+                              if (res[i].employeeName === answer.employeeName) {
+                                   console.log("This is test");
+                                   empId = res[i].id;
+                                   console.log("This is empId");
+                                   console.log(empId);
+                              }
+                         }
+
+                         inquirer
+                              .prompt([
+                                   {
+                                        type: "list",
+                                        name: "managerName",
+
+                                        choices: function () {
+                                             console.log("inside managerName");
+                                             console.log(choiceArray);
+                                             console.log(res);
+                                             // var choiceArray = [];
+                                             for (
+                                                  var i = 0;
+                                                  i < res.length;
+                                                  i++
+                                             ) {
+                                                  if (
+                                                       res[i].employeeName !==
+                                                       answer.employeeName
+                                                  )
+                                                       managerArray.push(
+                                                            res[i].employeeName
+                                                       );
+                                             }
+                                             return managerArray;
+                                        },
+                                        message:
+                                             "Which  manager do you want assign?",
+                                   },
+                              ])
+                              .then(function (result) {
+                                   // var empId = employeeId;
+                                   // console.log("manager array:");
+                                   // console.log(managerArray);
+                                   // var newManager = result.managerName;
+                                   // console.log("New Manager");
+                                   // console.log(newManager);
+                                   // console.log(empId);
+                                   var managerId;
+                                   for (var i = 0; i < res.length; i++) {
+                                        if (
+                                             res[i].employeeName ===
+                                             result.managerName
+                                        ) {
+                                             managerId = res[i].id;
+                                        }
+                                        console.log("This is managerId");
+                                        console.log(managerId);
+                                   }
+
+                                   connection.query(
+                                        "UPDATE employee SET ? WHERE ?",
+                                        [
+                                             {
+                                                  manager_id: managerId,
+                                             },
+                                             {
+                                                  id: empId,
+                                             },
+                                        ],
+                                        function (err) {
+                                             if (err) throw err;
+                                             console.log(
+                                                  "employee's manager updated successfully"
+                                             );
+                                        }
+                                   );
+                              });
+                    });
+          }
+     );
+} // var empNameArray = empName.split(" ");
 
 function updateEmployeeByRole() {}
 
