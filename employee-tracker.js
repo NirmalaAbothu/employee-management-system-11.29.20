@@ -1,9 +1,9 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-const fs = require("fs");
+//const fs = require("fs");
 const table = require("console.table");
-const { title } = require("process");
-const { Console } = require("console");
+//const { title } = require("process");
+//const { Console } = require("console");
 
 var connection = mysql.createConnection({
      host: "localhost",
@@ -21,6 +21,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function (err) {
      if (err) throw err;
+     runEmployeeTracker();
 });
 
 function runEmployeeTracker() {
@@ -38,6 +39,7 @@ function runEmployeeTracker() {
                          "Remove Employee",
                          "Update Employee by Manager",
                          "Update Employee by Role",
+                         "Exit",
                     ],
                },
           ])
@@ -73,10 +75,17 @@ function runEmployeeTracker() {
                     case "Update Employee by Role":
                          updateEmployeeByRole();
                          break;
-                    default:
+                    case "Exit":
+                         closeConnection();
+
                          break;
                }
           });
+}
+
+//function
+function closeConnection() {
+     connection.end();
 }
 
 //function
@@ -178,7 +187,7 @@ function listOfEmployees() {
 }
 
 //add employee
-function addEmployee() {
+function addEmployee1() {
      connection.query("SELECT * FROM role", function (err, results) {
           if (err) throw err;
           inquirer
@@ -206,12 +215,6 @@ function addEmployee() {
                          },
                          message: "What is employee's role?",
                     },
-                    // {
-                    //      type: "list",
-                    //      name: "employeeManager",
-                    //      message: "What is employee's manager?",
-                    //      choices: listOfManagers(),
-                    // },
                ])
                .then(function (answer) {
                     var roleId;
@@ -243,6 +246,121 @@ function addEmployee() {
      });
 }
 
+//add emmployee
+
+function addEmployee() {
+     connection.query("SELECT * FROM role", function (err, results) {
+          if (err) throw err;
+          inquirer
+               .prompt([
+                    {
+                         type: "input",
+                         name: "first_name",
+                         message: "What is employee's first-name",
+                    },
+                    {
+                         type: "input",
+                         name: "last_name",
+                         message: "What is employee's last-name",
+                    },
+                    {
+                         type: "list",
+                         name: "employeeRole",
+
+                         choices: function () {
+                              var choiceArray = [];
+                              for (var i = 0; i < results.length; i++) {
+                                   choiceArray.push(results[i].title);
+                              }
+                              return choiceArray;
+                         },
+                         message: "Select employee's role?",
+                    },
+               ])
+               .then(function (answer) {
+                    var roleId;
+                    for (var i = 0; i < results.length; i++) {
+                         if (results[i].title === answer.employeeRole) {
+                              roleId = results[i].id;
+                         }
+                    }
+
+                    //employee manager
+                    let query =
+                         "SELECT DISTINCT m.id, CONCAT(m.first_name,' ' ,m.last_name) as Manager from employee e INNER JOIN  employee m ON e.manager_id=m.id";
+                    connection.query(query, function (err, res) {
+                         if (err) throw err;
+                         inquirer
+                              .prompt([
+                                   {
+                                        type: "list",
+                                        name: "managerName",
+
+                                        choices: function () {
+                                             var managerArray = [];
+                                             for (
+                                                  var i = 0;
+                                                  i < res.length;
+                                                  i++
+                                             ) {
+                                                  managerArray.push(
+                                                       res[i].Manager
+                                                  );
+                                             }
+                                             console.log(managerArray);
+
+                                             return managerArray;
+                                        },
+                                        message:
+                                             "Select the manager name for employee",
+                                   },
+                              ])
+                              .then(function (answer2) {
+                                   let managerId;
+                                   console.log("res");
+                                   console.log(res);
+                                   for (var i = 0; i < res.length; i++) {
+                                        if (
+                                             res[i].Manager ===
+                                             answer2.managerName
+                                        ) {
+                                             managerId = res[i].id;
+                                             console.log("Manager");
+                                             console.log(managerId);
+                                        }
+                                   }
+
+                                   //employee manager end
+
+                                   connection.query(
+                                        "INSERT INTO employee SET ?",
+
+                                        {
+                                             first_name: answer.first_name,
+
+                                             last_name: answer.last_name,
+
+                                             role_id: roleId,
+
+                                             manager_id: managerId,
+                                        },
+
+                                        function (err) {
+                                             if (err) throw err;
+                                             console.log(
+                                                  "Employee record inserted successfully"
+                                             );
+                                        }
+                                   );
+                                   runEmployeeTracker();
+                              });
+                    });
+               });
+     });
+}
+
+// end add employee
+
 function viewAllEmployeesByDepartment() {
      //
 
@@ -263,7 +381,7 @@ function viewAllEmployeesByDepartment() {
                               return choiceArray;
                          },
                          message:
-                              "On which department do you want view all employees?",
+                              "Select the department for which do you want view all employees?",
                     },
                ])
                .then(function (answer) {
@@ -312,7 +430,7 @@ function viewAllEmployeesByManager() {
                               return choiceArray;
                          },
                          message:
-                              "For which manager do you want view all employees?",
+                              "Select the manager do you want view all employees?",
                     },
                ])
                .then(function (answer) {
@@ -364,7 +482,8 @@ function removeEmployee() {
                                    }
                                    return choiceArray;
                               },
-                              message: "Which employee do you want remove?",
+                              message:
+                                   "Select the employee do you want remove?",
                          },
                     ])
                     .then(function (answer) {
@@ -393,6 +512,7 @@ function removeEmployee() {
                                    );
                               }
                          );
+                         runEmployeeTracker();
                     });
           }
      );
@@ -440,21 +560,7 @@ function updateEmployeeByManager1() {
                          }
                          console.log(choiceArray);
                          console.log(managerArray);
-                         // for (var i = 0; i < res.length; i++) {
-                         //      if (res[i].employeeName === answer.employeeName) {
-                         //           empName = res[i].employeeName;
-                         //           console.log(empName);
-                         //           employeeId = res[i].id;
-                         //           console.log(employeeId);
-                         //      }
-                         // }
-                         //prevents employee from being their own manager
-                         // managerArray = choiceArray;
-                         // managerArray = choiceArray.filter(
-                         //      (currentEmp) => currentEmp.employeeName != empName
-                         // );
-                         // console.log(choiceArray);
-                         // console.log(managerArray);
+
                          inquirer
                               .prompt([
                                    {
@@ -508,25 +614,6 @@ function updateEmployeeByManager1() {
                     });
           }
      );
-
-     // var empNameArray = empName.split(" ");
-     // connection.query(
-     //      "DELETE FROM employee WHERE ?",
-     //      [
-     //           {
-     //                first_name: empNameArray[0],
-     //           },
-     //           {
-     //                last_name: empNameArray[1],
-     //           },
-     //      ],
-     //      function (err) {
-     //           if (err) throw err;
-     //           console.log(
-     //                "Employe record deleted successfully"
-     //           );
-     //      }
-     // );
 }
 
 //new
@@ -555,7 +642,7 @@ function updateEmployeeByManager() {
                                    console.log(choiceArray);
                                    return choiceArray;
                               },
-                              message: "Which employee do you want update?",
+                              message: "Select employee do you want update?",
                          },
                     ])
                     .then(function (answer) {
@@ -597,17 +684,10 @@ function updateEmployeeByManager() {
                                              return managerArray;
                                         },
                                         message:
-                                             "Which  manager do you want assign?",
+                                             "Select manager do you want assign?",
                                    },
                               ])
                               .then(function (result) {
-                                   // var empId = employeeId;
-                                   // console.log("manager array:");
-                                   // console.log(managerArray);
-                                   // var newManager = result.managerName;
-                                   // console.log("New Manager");
-                                   // console.log(newManager);
-                                   // console.log(empId);
                                    var managerId;
                                    for (var i = 0; i < res.length; i++) {
                                         if (
@@ -637,6 +717,7 @@ function updateEmployeeByManager() {
                                              );
                                         }
                                    );
+                                   runEmployeeTracker();
                               });
                     });
           }
@@ -667,7 +748,7 @@ function updateEmployeeByRole() {
                                    console.log(employeeArray);
                                    return employeeArray;
                               },
-                              message: "Which employee do you want update?",
+                              message: "Select employee do you want update?",
                          },
                     ])
                     .then(function (answer) {
@@ -759,9 +840,9 @@ function updateEmployeeByRole() {
                                         });
                               }
                          );
+                         runEmployeeTracker();
                          //end of second query
                     });
           }
      );
 }
-runEmployeeTracker();
