@@ -641,8 +641,127 @@ function updateEmployeeByManager() {
                     });
           }
      );
-} // var empNameArray = empName.split(" ");
+}
+// function Updated employee by role
+function updateEmployeeByRole() {
+     var employeeArray = [];
+     var roleArray = [];
+     connection.query(
+          "SELECT id, CONCAT(e.first_name,' ' ,e.last_name) as employeeName from employee e ORDER BY employeeName",
+          function (err, res) {
+               if (err) throw err;
+               console.log("This is res");
+               console.log(res);
+               inquirer
+                    .prompt([
+                         {
+                              type: "list",
+                              name: "employeeName",
 
-function updateEmployeeByRole() {}
+                              choices: function () {
+                                   // var choiceArray = [];
+                                   for (var i = 0; i < res.length; i++) {
+                                        employeeArray.push(res[i].employeeName);
+                                   }
+                                   console.log("This is employee array");
+                                   console.log(employeeArray);
+                                   return employeeArray;
+                              },
+                              message: "Which employee do you want update?",
+                         },
+                    ])
+                    .then(function (answer) {
+                         // get the information of the chosen list
+                         var empId;
+                         for (var i = 0; i < res.length; i++) {
+                              if (res[i].employeeName === answer.employeeName) {
+                                   console.log("This is test");
+                                   empId = res[i].id;
+                                   console.log("This is empId");
+                                   console.log(empId);
+                              }
+                         }
+                         //second query
 
+                         connection.query(
+                              "SELECT id,title from role ORDER BY title",
+                              function (err, result) {
+                                   if (err) throw err;
+                                   console.log("This is result");
+                                   console.log(result);
+                                   inquirer
+                                        .prompt([
+                                             {
+                                                  type: "list",
+                                                  name: "roleTitle",
+
+                                                  choices: function () {
+                                                       // var choiceArray = [];
+                                                       for (
+                                                            var i = 0;
+                                                            i < result.length;
+                                                            i++
+                                                       ) {
+                                                            roleArray.push(
+                                                                 result[i].title
+                                                            );
+                                                       }
+                                                       console.log(
+                                                            "This is role array"
+                                                       );
+                                                       console.log(roleArray);
+                                                       return roleArray;
+                                                  },
+                                                  message:
+                                                       "Which role do you want assign to selected employee?",
+                                             },
+                                        ])
+                                        .then(function (answer2) {
+                                             // get the information of the chosen list
+                                             var roleId;
+                                             for (
+                                                  var i = 0;
+                                                  i < result.length;
+                                                  i++
+                                             ) {
+                                                  if (
+                                                       result[i].title ===
+                                                       answer2.roleTitle
+                                                  ) {
+                                                       console.log(
+                                                            "This is role"
+                                                       );
+                                                       roleId = result[i].id;
+                                                       console.log(
+                                                            "This is roleId"
+                                                       );
+                                                       console.log(roleId);
+                                                  }
+                                             }
+
+                                             connection.query(
+                                                  "UPDATE employee SET ? WHERE ?",
+                                                  [
+                                                       {
+                                                            role_id: roleId,
+                                                       },
+                                                       {
+                                                            id: empId,
+                                                       },
+                                                  ],
+                                                  function (err) {
+                                                       if (err) throw err;
+                                                       console.log(
+                                                            "employee's role updated successfully"
+                                                       );
+                                                  }
+                                             );
+                                        });
+                              }
+                         );
+                         //end of second query
+                    });
+          }
+     );
+}
 runEmployeeTracker();
