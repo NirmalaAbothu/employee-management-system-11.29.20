@@ -681,6 +681,10 @@ function updateEmployeeByManager() {
                                                             res[i].employeeName
                                                        );
                                              }
+                                             console.log(
+                                                  "This is managerArray"
+                                             );
+                                             console.log(managerArray);
                                              return managerArray;
                                         },
                                         message:
