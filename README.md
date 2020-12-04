@@ -109,13 +109,8 @@ application exit.
 Node modules
 
 -    Inquirer : to prompts the user with questions
-
-Classes and inheritance : to crete the Emplyoee's objects(Manager,Engineer,and Intern)
-
--    Emplyoee Class with Employee constructor
--    Manager Class extends Emplyoee class
--    Engineer Class extends Emplyoee class
--    Intern Class extends Emplyoee class
+-    mysql
+-    express
 
 ## Getting Started
 
@@ -127,18 +122,20 @@ None
 
 ## Installation instructions:
 
-Clone the repo git clone git@github.com:NirmalaAbothu/team-profile-generator-11.10.20.git then open Git Bash window ,navigate to project folder then run
+Clone the repo git clone git@github.com:NirmalaAbothu/employee-management-system-11.29.20.git then open Git Bash window ,navigate to project folder then run
 following commands
 
 -    run "npm install" or "npm i"
--    run "npm run test"
--    run "node app.js"
-
-after run the above command and answer all questions, then navigate to project folder in Visual Studio Code,you should able to see "output"folder and "team.html" and "style.css" files in "output" folder.Open the "team.html" in browser and see the Team Profile page.
+-    run "npm mysql"
+-    run "node app.employee-tracker.js"
+-    if you get any error saying that perticular package cann't find, please install that specific package by runnig following command
+     run "npm run packagename(wahtever package missed)"
+     after install missing package again run the following command and
+     select options from list and enter or select values as app directs.
 
 ## Credits
 
-Followed the documentation about classes,inheritance and node js
+Followed the documentation about mysql
 
 ## License & copyright
 

@@ -37,13 +37,14 @@ INSERT INTO employee_trackerDB.department(name) values("PAYROLL");
 
 INSERT INTO employee_trackerDB.role(title,salary,department_id) values("Software Developer",100,000,1);
 INSERT INTO employee_trackerDB.role(title,salary,department_id) values("Manager",150,000,2);
-INSERT INTO employee_trackerDB.role(title,salary,department_id) values("HR",90,000,4);
-INSERT INTO employee_trackerDB.role(title,salary,department_id) values("Tech Support",112,000,3);
+INSERT INTO employee_trackerDB.role(title,salary,department_id) values("Lead",120000,4);
+INSERT INTO employee_trackerDB.role(title,salary,department_id) values("VP",200000,3);
 
 
 
 INSERT INTO employee_trackerDB.employee(first_name,last_name,role_id,manager_id) values("Pam","Scott",1);
-INSERT INTO employee_trackerDB.employee(first_name,last_name,role_id,manager_id) values("Sam","Lind",2,1);
+INSERT INTO employee_trackerDB.employee(first_name,last_name,role_id,manager_id) values("Sam","Lind",2,34);
+INSERT INTO employee_trackerDB.employee(first_name,last_name,role_id,manager_id) values("Ammu","Abothu",4,35);
 
 
 
