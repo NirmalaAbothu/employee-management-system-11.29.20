@@ -14,6 +14,18 @@
 
 ![alt text](Images/image5.PNG)
 
+![alt text](Images/image6.PNG)
+
+![alt text](Images/image7.PNG)
+
+![alt text](Images/image8.PNG)
+
+![alt text](Images/image9.PNG)
+
+![alt text](Images/image10.PNG)
+
+![alt text](Images/image11.PNG)
+
 This application is about Employee Management System from Command Line Interface.
 This application allows user to perfome following tasks
 
