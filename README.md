@@ -14,7 +14,7 @@
 
 ![alt text](Images/image5.PNG)
 
-This application is about Employee Management System from Command Line Interface
+This application is about Employee Management System from Command Line Interface.
 This application allows user to perfome following tasks
 
 -    View All Employees
@@ -25,7 +25,7 @@ This application allows user to perfome following tasks
 -    Update Employee by Manager
 -    Update Employee by Role
 
-First applicatin prompts to user the following options:
+First application prompts to user the following options:
 
 -    View All Employees
 -    View All Employees by Department
@@ -130,7 +130,8 @@ following commands
 -    run "node app.employee-tracker.js"
 -    if you get any error saying that perticular package cann't find, please install that specific package by runnig following command
      run "npm run packagename(wahtever package missed)"
-     after install missing package again run the following command and
+     after install missing package again run the following command
+     run "node app.employee-tracker.js" and
      select options from list and enter or select values as app directs.
 
 ## Credits
