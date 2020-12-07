@@ -137,7 +137,7 @@ None
 Clone the repo git clone git@github.com:NirmalaAbothu/employee-management-system-11.29.20.git then open Git Bash window ,navigate to project folder then run
 following commands
 
--    run "npm install" or "npm i"
+-    run "npm init"
 -    run "npm install mysql"
 -    run "npm install express", then
 -    open the project in Visual Studio code,open the file "employee-tracker.sql" file
