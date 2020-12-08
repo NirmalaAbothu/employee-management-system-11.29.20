@@ -5,6 +5,7 @@
   "main": "employee-tracker.js",
   "dependencies": {
     "console.table": "^0.10.0",
+    "dotenv": "^8.2.0",
     "i": "^0.3.6",
     "inquirer": "^7.3.3",
     "mysql": "^2.18.1"

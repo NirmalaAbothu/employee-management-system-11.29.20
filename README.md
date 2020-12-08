@@ -139,6 +139,7 @@ following commands
 
 -    run "npm init"
 -    run "npm install mysql"
+-    run "npm install dotenv"
 -    run "npm install express", then
 -    open the project in Visual Studio code,open the file "employee-tracker.sql" file
 -    this file has information about database name,table names and data to create the records in tables.
