@@ -144,8 +144,7 @@ following commands
 -    open the project in Visual Studio code,open the file "employee-tracker.sql" file
 -    this file has information about database name,table names and data to create the records in tables.
 -    copy and paste the entire code in "MYSQL Workbench" and run or execute the entire code in MYSQL Workbench,
--    make sure database(employee_trackerDB),tables(department,role and employee) and inserted records in tables
--    are created successfully.
+-    make sure database(employee_trackerDB),tables(department,role and employee) and inserted records in tables are created successfully.
 -    create ".env" file in root directory and assign your mysql password to PW, for example
 -    PW = your mysql password.
 -    then nvigate to terminal and run the following command
