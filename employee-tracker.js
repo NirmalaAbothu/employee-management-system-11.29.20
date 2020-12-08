@@ -2,6 +2,7 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 const table = require("console.table");
+require("dotenv").config();
 
 // Creatind Sql connection
 var connection = mysql.createConnection({
@@ -14,7 +15,7 @@ var connection = mysql.createConnection({
      user: "root",
 
      // Your password
-     password: "1Asamuel",
+     password: process.env.PW,
      database: "employee_trackerDB",
 });
 

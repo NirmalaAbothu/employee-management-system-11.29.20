@@ -145,6 +145,8 @@ following commands
 -    copy and paste the entire code in "MYSQL Workbench" and run or execute the entire code in MYSQL Workbench,
 -    make sure database(employee_trackerDB),tables(department,role and employee) and inserted records in tables
 -    are created successfully.
+-    create ".env" file in root directory and assign your mysql password to PW, for example
+-    PW = your mysql password.
 -    then nvigate to terminal and run the following command
 -    run "node employee-tracker.js"
 -    if you get any error saying that perticular package cann't find, please install that specific package by runnig following command
